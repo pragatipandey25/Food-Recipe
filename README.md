@@ -1,16 +1,66 @@
-# React + Vite
+# Food Recipe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + Vite application that lets users browse, search and view recipes using TheMealDB API.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Curated sliders for staff picks and trending meals
+- Category-based filtering and search
+- Recipe detail view with ingredients and instructions
+- Includes an "Indian Favorites" section (uses TheMealDB)
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Install dependencies
 
-## Expanding the ESLint configuration
+```bash
+npm install
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2. Run the development server
+
+```bash
+npm run dev
+```
+
+3. Build for production
+
+```bash
+npm run build
+```
+
+4. Preview production build
+
+```bash
+npm run preview
+```
+
+## Project Structure (important files)
+
+- `src/main.jsx` — app entry
+- `src/App.jsx` — main router and filters
+- `src/components/HomeView.jsx` — home page sliders and sections
+- `src/components/TredingRecipe.jsx` — trending slider component
+- `src/components/useFetch.js` — fetch hook and `API_URL`
+
+## API
+
+This project uses TheMealDB public API (`https://www.themealdb.com/api/json/v1/1/`).
+
+Note: Some area filters use the country name rather than an adjective. For example the area parameter for Indian recipes is `a=India` (not `a=Indian`). The home view was updated to use `filter.php?a=India` so the "Indian Favorites" slider shows results. See `src/components/HomeView.jsx` for the change.
+
+## Troubleshooting
+
+- If a slider shows no results, open the browser console to check network requests. The fetch hook is in `src/components/useFetch.js`.
+- If TheMealDB returns `{"meals":null}`, try running the equivalent API in a browser to confirm the area or query.
+
+## Contributing
+
+Feel free to open issues or submit PRs. Small improvements:
+
+- Add more curated areas or categories
+- Add graceful empty-state UI for sliders with no results
+
+## License
+
+MIT
