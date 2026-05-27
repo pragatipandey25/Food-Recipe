@@ -70,6 +70,52 @@ button {
   color: var(--accent) !important;
 }
 
+/* Cuisine bar and chips — theme-aware, consistent spacing and contrast */
+.cuisine-bar {
+  background-color: var(--nav-bg) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.cuisine-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.cuisine-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+  white-space: nowrap;
+}
+
+.cuisine-chip:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  border-color: rgba(59, 130, 246, 0.24);
+}
+
+.cuisine-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* make horizontal scroll look cleaner */
+.cuisine-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
 /* Ensure Tailwind utility classes used in the app adapt to the active theme */
 [data-theme="light"] .text-white,
 [data-theme="light"] .text-gray-50,

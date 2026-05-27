@@ -13,13 +13,16 @@ const RecipeSlider = ({ title, fetchUrl }) => {
 
   const settings = {
     dots: false,
+    arrows: true,
     infinite: true,
     speed: 600,
-    slidesToShow: 3,
+    slidesToShow: 6,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
     cssEase: "linear",
+    appendDots: () => null,
+    customPaging: () => null,
   };
 
   if (loading)
@@ -37,11 +40,11 @@ const RecipeSlider = ({ title, fetchUrl }) => {
           {title}
         </h2>
 
-        <div style={{ width: "90%", margin: "auto", padding: "10px" }}>
+        <div className="w-full mx-auto">
           <Slider {...settings}>
             {meals.map((meal) => (
               <div key={meal.idMeal} className="px-10 flex justify-center">
-                <RecipeCard meal={meal} />
+                <RecipeCard meal={meal} compact />
               </div>
             ))}
           </Slider>

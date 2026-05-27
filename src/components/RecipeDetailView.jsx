@@ -4,6 +4,7 @@ import { useFetch, API_URL } from "./useFetch";
 import { Loader } from "lucide-react";
 
 import { ChevronLeft, Utensils, BookOpen } from "lucide-react";
+import { addRecentViewed } from "../utils/store";
 
 const RecipeDetailView = () => {
   const { id } = useParams();
@@ -11,6 +12,11 @@ const RecipeDetailView = () => {
   const meal = data?.meals?.[0];
 
   console.log(meal);
+
+  // persist recently viewed
+  React.useEffect(() => {
+    if (meal) addRecentViewed(meal);
+  }, [meal]);
 
   if (loading)
     return (
@@ -101,30 +107,29 @@ const RecipeDetailView = () => {
               </div>
             </div>
           </div>
-       
 
-        {/* instructions */}
-        <div className="mt-14 pt-8 border-t border-gray-800">
-          <h2 className="text-3xl font-bold text-gray-100 mb-8 flex items-center">
-            {" "}
-            <BookOpen className="w-7 h-7 mr-3 text-blue-500" /> Detailed
-            Preparation Steps
-          </h2>
-          <ol className="space-y-6 list-none text-gray-300">
-            {instructions.map((step, index) => (
-              <li
-                key={index}
-                className="text-lg leading-relaxed bg-gray-800 p-5 rounded-xl border-1-6 border-blue-500 shadow-lg shadow-black-30 transition duration-300 hover:bg-gray-700/50"
-              >
-                <span className="font-extrabold text-yellow-400 mr-3 text-xl">
-                  {index + 1}
-                </span>
-                {step.trim()}
-              </li>
-            ))}
-          </ol>
+          {/* instructions */}
+          <div className="mt-14 pt-8 border-t border-gray-800">
+            <h2 className="text-3xl font-bold text-gray-100 mb-8 flex items-center">
+              {" "}
+              <BookOpen className="w-7 h-7 mr-3 text-blue-500" /> Detailed
+              Preparation Steps
+            </h2>
+            <ol className="space-y-6 list-none text-gray-300">
+              {instructions.map((step, index) => (
+                <li
+                  key={index}
+                  className="text-lg leading-relaxed bg-gray-800 p-5 rounded-xl border-1-6 border-blue-500 shadow-lg shadow-black-30 transition duration-300 hover:bg-gray-700/50"
+                >
+                  <span className="font-extrabold text-yellow-400 mr-3 text-xl">
+                    {index + 1}
+                  </span>
+                  {step.trim()}
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-         </div>
       </main>
     </>
   );
