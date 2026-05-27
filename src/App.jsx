@@ -2,14 +2,18 @@ import React, { useCallback, useState } from "react";
 import Navbar from "./components/Navbar";
 import RecipeDetailView from "./components/RecipeDetailView";
 import SearchView from "./components/SearchView";
-import CuisineBar from "./components/Cuisine";
 import HomeView from "./components/HomeView";
+import MyFavorites from "./components/MyFavorites";
+import Footer from "./components/Footer";
+import { useAuth } from "./AuthContext";
+import { Navigate } from "react-router-dom";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const API_URL = "https://www.themealdb.com/api/json/v1/1/";
 
 const App = () => {
+  const { isAuthenticated } = useAuth();
   const [searchResult, setSearchResult] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
 
@@ -87,22 +91,39 @@ const App = () => {
   return (
     <>
       <Router>
-        <div className="min-h-screen bg-gray-950 font-sans text-gray-100">
+        <div className="min-h-screen bg-gray-950 font-sans text-gray-100 flex flex-col">
           <Navbar handleSearch={handleSearch} />
-          <CuisineBar filterByArea={filterByArea} />
-          <Routes>
-            <Route
-              path="/"
-              element={<HomeView filterByCategory={filterByCategory} />}
-            />
-            <Route path="/recipe/:id" element={<RecipeDetailView />} />
-            <Route
-              path="/search/:query"
-              element={
-                <SearchView meals={searchResult} loading={searchLoading} />
-              }
-            />
-          </Routes>
+          <div className="flex-1">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <HomeView
+                    filterByCategory={filterByCategory}
+                    filterByArea={filterByArea}
+                  />
+                }
+              />
+              <Route path="/recipe/:id" element={<RecipeDetailView />} />
+              <Route
+                path="/favorites"
+                element={
+                  isAuthenticated ? (
+                    <MyFavorites />
+                  ) : (
+                    <Navigate to="/" replace />
+                  )
+                }
+              />
+              <Route
+                path="/search/:query"
+                element={
+                  <SearchView meals={searchResult} loading={searchLoading} />
+                }
+              />
+            </Routes>
+          </div>
+          <Footer />
         </div>
       </Router>
     </>

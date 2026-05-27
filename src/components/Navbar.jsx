@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
-import { Search, Zap, Sun, Moon } from "lucide-react";
+import { Search, Zap, Sun, Moon, User, Heart } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../ThemeContext";
+import { useAuth } from "../AuthContext";
 
 const Navbar = ({ handleSearch }) => {
   const [input, setInput] = useState("");
@@ -49,7 +50,10 @@ const Navbar = ({ handleSearch }) => {
                 </button>
               </form>
 
-              <ThemeToggle />
+              <div className="flex items-center">
+                <ThemeToggle />
+                <AuthControls />
+              </div>
             </div>
           </div>
         </div>
@@ -78,3 +82,36 @@ const ThemeToggle = () => {
 };
 
 export default Navbar;
+
+const AuthControls = () => {
+  const { isAuthenticated, user, logout, openAuth } = useAuth();
+
+  if (isAuthenticated) {
+    return (
+      <div className="ml-3 flex items-center gap-3">
+        <Link
+          to="/favorites"
+          className="btn btn-primary flex items-center gap-2"
+        >
+          <Heart className="w-4 h-4" /> Favorites
+        </Link>
+        <span className="text-sm">{user?.name || "You"}</span>
+        <button className="btn btn-secondary" onClick={logout} title="Logout">
+          Logout
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="ml-3 flex items-center gap-3">
+      <button
+        className="btn btn-primary flex items-center gap-2"
+        onClick={() => openAuth("signup")}
+        title="Join to save recipes"
+      >
+        <User className="w-4 h-4" /> Join to save recipes
+      </button>
+    </div>
+  );
+};

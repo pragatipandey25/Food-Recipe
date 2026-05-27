@@ -3,15 +3,15 @@ import React from "react";
 import RecipeSlider from "./RecipeSlider";
 import TredingRecipe from "./TredingRecipe";
 import CategorySection from "./CategorySelection";
+import Cuisine from "./Cuisine";
 import FeaturedBanner from "./FeaturedBanner";
 import PlaceholderSection from "./PlaceholderSection";
 import BasedOnTaste from "./BasedOnTaste";
 import RecentlyViewed from "./RecentlyViewed";
-import CommunityFavorites from "./CommunityFavorites";
 
 import { API_URL } from "./useFetch";
 
-const HomeView = ({ filterByCategory }) => {
+const HomeView = ({ filterByCategory, filterByArea }) => {
   return (
     <main className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
       {/* Featured banner */}
@@ -19,6 +19,9 @@ const HomeView = ({ filterByCategory }) => {
 
       {/* Categories */}
       <CategorySection filterByCategory={filterByCategory} />
+
+      {/* Global Cuisines */}
+      <Cuisine filterByArea={filterByArea} />
 
       {/* Trending Recipes */}
       <TredingRecipe
@@ -49,9 +52,6 @@ const HomeView = ({ filterByCategory }) => {
 
       {/* Recently Viewed */}
       <RecentlyViewed />
-
-      {/* Community Favorites */}
-      <CommunityFavorites />
     </main>
   );
 };

@@ -21,21 +21,12 @@ const FeaturedBanner = ({ filterByCategory }) => {
         </div>
 
         <div className="flex gap-3">
-          <button
-            onClick={() => go("Chicken")}
-            className="px-4 py-2 rounded-md font-semibold shadow-md"
-            style={{ backgroundColor: "var(--accent)", color: "white" }}
-          >
+          <button onClick={() => go("Chicken")} className="btn btn-primary">
             Explore Chicken
           </button>
           <button
             onClick={() => go("Vegetarian")}
-            className="px-4 py-2 rounded-md font-medium"
-            style={{
-              backgroundColor: "transparent",
-              color: "white",
-              border: "1px solid rgba(255,255,255,0.22)",
-            }}
+            className="btn btn-secondary"
           >
             Browse Veg
           </button>

@@ -63,4 +63,10 @@ export const setCommunityFavorites = (list) => {
   } catch (e) {}
 };
 
+export const clearRecentlyViewed = () => {
+  try {
+    localStorage.removeItem(RECENT_KEY);
+  } catch (e) {}
+};
+
 export default {};

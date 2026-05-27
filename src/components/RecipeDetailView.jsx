@@ -3,20 +3,26 @@ import { useParams, Link } from "react-router-dom";
 import { useFetch, API_URL } from "./useFetch";
 import { Loader } from "lucide-react";
 
-import { ChevronLeft, Utensils, BookOpen } from "lucide-react";
-import { addRecentViewed } from "../utils/store";
+import { ChevronLeft, Utensils, BookOpen, Heart } from "lucide-react";
+import {
+  addRecentViewed,
+  getCommunityFavorites,
+  setCommunityFavorites,
+} from "../utils/store";
+import { useAuth } from "../AuthContext";
 
 const RecipeDetailView = () => {
   const { id } = useParams();
   const { data, loading, error } = useFetch(`${API_URL}lookup.php?i=${id}`);
   const meal = data?.meals?.[0];
+  const { isAuthenticated } = useAuth();
 
   console.log(meal);
 
   // persist recently viewed
   React.useEffect(() => {
-    if (meal) addRecentViewed(meal);
-  }, [meal]);
+    if (meal && isAuthenticated) addRecentViewed(meal);
+  }, [meal, isAuthenticated]);
 
   if (loading)
     return (
@@ -57,6 +63,11 @@ const RecipeDetailView = () => {
           <ChevronLeft className="w-6 h-6 mr-1 transition" />
           Back to Dashboard
         </Link>
+
+        {/* Save / Favorite button */}
+        <div className="flex items-center justify-end mb-4">
+          <SaveButton meal={meal} />
+        </div>
 
         <div className="bg-gray-900 p-6 md:p-12 rounded-3xl shadow-2xl shadow-black/70 border border-gray-800">
           <div className="lg:flex lg:space-x-12">
@@ -136,3 +147,41 @@ const RecipeDetailView = () => {
 };
 
 export default RecipeDetailView;
+
+const SaveButton = ({ meal }) => {
+  const { isAuthenticated, openAuth } = useAuth();
+
+  const handleSave = () => {
+    if (!isAuthenticated) return openAuth("login");
+
+    try {
+      const list = getCommunityFavorites() || [];
+      const exists = list.find((m) => m.idMeal === meal.idMeal);
+      if (exists) {
+        alert("Already saved to favorites.");
+        return;
+      }
+      const next = [
+        {
+          idMeal: meal.idMeal,
+          strMeal: meal.strMeal,
+          strMealThumb: meal.strMealThumb,
+        },
+        ...list,
+      ];
+      setCommunityFavorites(next);
+      alert("Saved to favorites.");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return (
+    <button
+      onClick={handleSave}
+      className="btn btn-primary flex items-center gap-2"
+    >
+      <Heart className="w-4 h-4" /> Save
+    </button>
+  );
+};
